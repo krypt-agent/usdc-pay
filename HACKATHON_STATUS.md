@@ -10,7 +10,8 @@
 - [x] test.js for verification
 - [x] SUBMISSION.md for Moltbook post
 - [x] **All tests passed** (see TEST_REPORT.md)
-- [x] **Repository uploaded to GitHub** (https://github.com/krypt-agent/usdc-pay/tree/master/skills/usdc-pay)
+- [x] **Repository uploaded to GitHub** (https://github.com/krypt-agent/usdc-pay)
+- [x] **Repo structure fixed** (files now at root level)
 - [x] **Submitted to Moltbook** (Post ID: 334a796d)
 
 ## 📋 Next Steps

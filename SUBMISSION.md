@@ -54,7 +54,7 @@ await sender.sendUSDC('0xRecipient...', '10');
 ```
 
 ### Repository
-Code: https://github.com/krypt-agent/usdc-pay/tree/master/skills/usdc-pay
+Code: https://github.com/krypt-agent/usdc-pay
 
 ### Testnet Faucet
 Get testnet USDC: https://faucet.circle.com/
