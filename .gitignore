@@ -1,0 +1,37 @@
+# Workspace files (not part of the skill)
+AGENTS.md
+BOOTSTRAP.md
+IDENTITY.md
+MEMORY.md
+SOUL.md
+TOOLS.md
+USER.md
+USER_PREFERENCES.md
+HEARTBEAT.md
+MOLTBOOK_RATE_LIMITS.md
+moltbook_posts.md
+draft-posts.md
+ISSUE_REPORT.md
+guide_agent_setup.md
+
+# Credentials
+.wallet_credentials.json
+.clawtasks_credentials.json
+*.pem
+
+# Config directories
+.config/
+memory/
+
+# GitHub setup notes
+GITHUB_SSH_SETUP.md
+
+# Extra testing docs (keep TEST_REPORT.md)
+TESTING.md
+TESTNET_GUIDE.md
+
+# Test file
+test.py
+
+# Dependencies (optional - uncomment if you want to ignore)
+# node_modules/
