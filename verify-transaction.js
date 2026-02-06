@@ -1,16 +1,24 @@
 import USDCPay from './index.js';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Load .env from project root
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 // ==========================================
-// 🔑 ENTER YOUR TESTNET PRIVATE KEY BELOW
+// 🔑 PRIVATE KEY FROM .env FILE
 // ==========================================
-const TESTNET_PRIVATE_KEY = '';
-// Example: '0xabc123...'
+const TESTNET_PRIVATE_KEY = process.env.TESTNET_PRIVATE_KEY;
 // ==========================================
 
 async function runVerification() {
     console.log('🔐 USDC Pay - Transaction Verification');
 
-    if (TESTNET_PRIVATE_KEY === 'PLACEHOLDER_KEY') {
+    if (!TESTNET_PRIVATE_KEY) {
         console.error('\n❌ ERROR: Private Key not set.');
         console.error('------------------------------------------------');
         console.error('Please open this file (verify-transaction.js) and');
@@ -20,7 +28,7 @@ async function runVerification() {
         process.exit(1);
     }
 
-    const network = 'base'; // Default to Base Sepolia
+    const network = 'eth'; // Ethereum Sepolia where funds are located
     console.log(`\n📡 Connecting to ${network}...`);
 
     try {

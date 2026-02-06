@@ -22,12 +22,20 @@ contract AgentIdentityRegistry {
     address public immutable i_owner;
     
     // USDC on testnet
-    address public constant USDC = 0x833589fCD6eDb6E08f4c7C32D4f71b54bDA02913;
+    address public constant USDC = 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913;
     
     uint256 public agentCount;
+    address[] public agentAddresses; // Track addresses for enumeration
+    
     mapping(address => Agent) public agents;
     mapping(address => bool) public isRegistered;
-    mapping(address => address[]) public agentReputations; // Who voted for this agent
+    
+    // Mapping: Sender -> Agent -> Boolean (Has sender voted for agent?)
+    mapping(address => mapping(address => bool)) public hasVotedMap;
+    
+    // Optional: Keep track of who an agent has voted for (if needed for UI)
+    mapping(address => address[]) public votesCastByAgent;
+    
     mapping(address => string[]) public agentSkills; // What agent can do
     
     event AgentRegistered(address indexed agentAddr, string name, string metadata);
@@ -37,6 +45,7 @@ contract AgentIdentityRegistry {
     
     modifier onlyOwner() {
         require(msg.sender == i_owner, "Only owner");
+        _;
     }
     
     constructor() {
@@ -68,6 +77,8 @@ contract AgentIdentityRegistry {
             verified: false
         });
         
+        isRegistered[msg.sender] = true;
+        agentAddresses.push(msg.sender);
         agentCount++;
         
         emit AgentRegistered(msg.sender, name, metadata);
@@ -82,6 +93,7 @@ contract AgentIdentityRegistry {
         // In production, this would require proof of execution
         // For hackathon demo, we trust self-reporting
         agentSkills[msg.sender].push(skill);
+        emit AgentSkillAdded(msg.sender, skill);
     }
     
     /**
@@ -92,25 +104,22 @@ contract AgentIdentityRegistry {
         require(isRegistered[agentAddr], "Agent not registered");
         require(isRegistered[msg.sender], "Must be registered to vote");
         require(agentAddr != msg.sender, "Cannot vote for self");
-        require(!hasVoted(msg.sender, agentAddr), "Already voted");
+        require(!hasVotedMap[msg.sender][agentAddr], "Already voted");
         
-        hasVoted[msg.sender][agentAddr] = true;
-        agentReputations[msg.sender].push(agentAddr);
+        hasVotedMap[msg.sender][agentAddr] = true;
+        votesCastByAgent[msg.sender].push(agentAddr);
+        
+        uint256 oldRep = agents[agentAddr].reputation;
         agents[agentAddr].reputation += 1;
         
-        emit ReputationUpdated(agentAddr, agents[agentAddr].reputation, agents[agentAddr].reputation - 1);
+        emit ReputationUpdated(agentAddr, agents[agentAddr].reputation, oldRep);
     }
     
     /**
      * @notice Check if sender has voted for agent
      */
     function hasVoted(address sender, address agentAddr) public view returns (bool) {
-        for (uint i = 0; i < agentReputations[sender].length; i++) {
-            if (agentReputations[sender][i] == agentAddr) {
-                return true;
-            }
-        }
-        return false;
+        return hasVotedMap[sender][agentAddr];
     }
     
     /**
@@ -134,23 +143,26 @@ contract AgentIdentityRegistry {
             agent.description,
             agent.registeredAt,
             agent.reputation,
-            agent.skills,
+            agentSkills[agentAddr],
             agent.verified
         );
     }
     
     /**
      * @notice Get all registered agents (paginated)
+     * @dev Simple implementation for hackathon. Returns basic struct data, not skills to save gas.
      */
     function getAllAgents(uint256 offset, uint256 limit) external view returns (Agent[] memory) {
-        Agent[] memory result = new Agent[](limit);
-        uint256 count = 0;
+        if (offset >= agentCount) {
+             return new Agent[](0);
+        }
         
-        // Simple iteration - not gas efficient for large sets
-        // In production, would use Enumerable library or mappings
-        for (uint i = offset; i < agentCount && count < limit; i++) {
-            // Need to track actual array storage differently for production
-            // Skipping for hackathon demo
+        uint256 remaining = agentCount - offset;
+        uint256 resultSize = remaining < limit ? remaining : limit;
+        Agent[] memory result = new Agent[](resultSize);
+        
+        for (uint i = 0; i < resultSize; i++) {
+            result[i] = agents[agentAddresses[offset + i]];
         }
         
         return result;

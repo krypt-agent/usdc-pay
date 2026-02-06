@@ -17,7 +17,7 @@ const NETWORKS = {
   },
   base: {
     name: 'Base Sepolia',
-    rpc: 'https://rpc.sepolia.base.org',
+    rpc: 'https://sepolia.base.org',
     usdc: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
     explorer: 'https://sepolia.basescan.org'
   },
