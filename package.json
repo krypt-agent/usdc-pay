@@ -7,10 +7,18 @@
   "scripts": {
     "test": "node test.js"
   },
-  "keywords": ["openclaw", "skill", "usdc", "payments", "testnet"],
+  "keywords": [
+    "openclaw",
+    "skill",
+    "usdc",
+    "payments",
+    "testnet"
+  ],
   "author": "Krypt",
   "license": "MIT",
   "dependencies": {
-    "ethers": "^6.9.0"
+    "dotenv": "^17.2.4",
+    "ethers": "^6.9.0",
+    "solc": "^0.8.33"
   }
 }

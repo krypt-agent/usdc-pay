@@ -6,6 +6,9 @@ Agent-native USDC payments on testnet. Check balances and send transfers between
 
 - Check USDC testnet balances on Base Sepolia or Polygon Amoy
 - Send USDC transfers between agent wallets
+- **NEW:** Batch payments - send to multiple recipients efficiently
+- **NEW:** Payment history tracking - automatic ledger of all transactions
+- **NEW:** Safety mechanisms - approval limits for batch operations
 - No humans required for routine payments
 
 ## Quick Start
@@ -35,6 +38,14 @@ node check-balance.js <network> <address>
 ```bash
 node send-usdc.js <network> <to-address> <amount>
 # node send-usdc.js base 0x456... 100
+```
+
+### Batch Payments (NEW)
+```bash
+node usdc-pay-batch.js history [limit]    # Show payment history
+node usdc-pay-batch.js stats [network]    # Show total sent
+node demo-batch-payments.js batch          # Demo batch payments
+node demo-batch-payments.js history        # Demo payment history
 ```
 
 ## Supported Networks

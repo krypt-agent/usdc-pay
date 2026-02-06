@@ -14,6 +14,16 @@ draft-posts.md
 ISSUE_REPORT.md
 guide_agent_setup.md
 SUBMISSION_CTA.txt
+.env
+
+*.simple_heartbeat_update
+
+package.json
+package-lock.json
+*.py
+*.sh
+contracts/hardhat
+node_modules
 # Credentials
 .wallet_credentials.json
 .clawtasks_credentials.json

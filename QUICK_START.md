@@ -2,7 +2,6 @@
 
 ## Installation
 ```bash
-cd /home/cacharro/agent_workspace/skills/usdc-pay
 npm install
 ```
 
